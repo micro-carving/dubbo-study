@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>git.olin</groupId>
+    <artifactId>order-web-consumer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!--引入公共模块的依赖（实体类与接口定义）-->
+        <dependency>
+            <groupId>git.olin</groupId>
+            <artifactId>api-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--引入dubbo-->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/dubbo -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <!--注册中心使用的是zookeeper，引入操作zookeeper的客户端（curator）-->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

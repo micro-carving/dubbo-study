@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--包扫描-->
+    <context:component-scan base-package="git.olin.gmall.service.impl"></context:component-scan>
+
+    <doubbo:application name="order-service-consumer"></doubbo:application>
+
+    <doubbo:registry address="zookeeper://127.0.0.1:2181"></doubbo:registry>
+
+    <!--声明需要调用的远程服务接口，生成远程服务代理-->
+    <!--
+        1）、精确优先(方法级优先，接口级次之，全局配置再次之)
+        2）、消费者优先(如果级别一样，则消费方优先，提供方次之)
+    -->
+    <!--timeout="0"超时 默认是1000ms-->
+    <!--retries="":重试次数，不包含第一次调用，0代表不重试-->
+    <!--幂等(设置重试次数【数据库：查询、删除、修改】)、非幂等(不能设置重试次数【数据库：新增】)-->
+    <!--设置使用的服务提供者的版本号，*表示随机，例如：使用1.0.0版本-->
+    <!--stub:配置本地存根-->
+    <dubbo:reference interface="git.olin.gmall.service.UserService"
+                     id="userService" timeout="5000" retries="3" version="*" stub="git.olin.gmall.service.impl.UserServiceStub">
+        <!--使某个方法进行超时-->
+        <!--<doubbo:method name="getUserAddressList" timeout="1000"></doubbo:method>-->
+    </dubbo:reference>
+
+    <!--配置当前消费者的统一规则，所有的服务都不检查-->
+    <doubbo:consumer check="false" timeout="5000"></doubbo:consumer>
+    <!--连接监控中心-->
+    <!--protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心-->
+    <doubbo:monitor protocol="registry"></doubbo:monitor>
+    <!--直连监控中心服务器地址-->
+    <!--<doubbo:monitor address="127.0.0.1:7070"></doubbo:monitor>-->
+</beans>
